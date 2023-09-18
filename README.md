@@ -10,9 +10,9 @@ This package contains plugins that support the simulation of waves and surface v
 ![rs750_ardupilot_v3_upwind](https://user-images.githubusercontent.com/24916364/228044489-b434b1ae-c30f-4676-9415-1719ee75479b.gif)
 
 
-The main branch targets [Gazebo Garden](https://gazebosim.org/docs/garden) and no longer has a dependency on ROS. 
+여기서 main 브랜치는 [Gazebo Garden](https://gazebosim.org/docs/garden)을 타겟으로 하며 ROS에 대한 의존성이 더 이상 없다.
 
-There are new features including FFT wave generation methods, ocean tiling, and support for the [Ogre2](https://github.com/OGRECave/ogre-next) render engine. There are some changes in the way that the wave parameters need to be set, but as far possible we have attempted to retain compatibility with the earlier versions. Further details are described below where you can also find a section describing [support for legacy versions of Gazebo](#legacy-versions).
+새로운 기능으로 FFT wave 생성 방법, ocean tiling, 랜더링 엔진으로 [Ogre2](https://github.com/OGRECave/ogre-next)을 지원한다. wave 파라미터 설정하는 방식이 약간 변경되었지만 이전 버전과의 호환성을 최대한 유지한다.
 
 ## Dependencies
 
@@ -32,36 +32,25 @@ sudo apt-get update
 sudo apt-get install libcgal-dev libfftw3-dev
 ```
 
-## macOS
 
-- macOS 12.6 (Monterey)
-- Gazebo Sim, version 7.1.0 (Garden)
+## 설치
 
-Install CGAL and FFTW:
-
-```zsh
-brew update
-brew install cgal fftw
-```
-
-## Installation
-
-### Create a workspace
+### workspace 생성
 
 ```bash
 mkdir -p gz_ws/src
 ```
 
-### Clone and build the package
+### Clone 및 build
 
-Clone the `asv_wave_sim` repository:
+`asv_wave_sim` repo clone 하기:
 
 ```bash
 cd ~/gz_ws/src
 git clone https://github.com/srmainwaring/asv_wave_sim.git
 ```
 
-Compile the package:
+package 컴파일:
 
 #### Ubuntu
 
@@ -77,27 +66,9 @@ Source the workspace:
 ```bash
 source ./install/setup.bash
 ```
+### GUI plugin 빌드하기 (옵션) 
 
-#### macOS
-
-```bash
-colcon build --symlink-install --merge-install --cmake-args \
--DCMAKE_BUILD_TYPE=RelWithDebInfo \
--DBUILD_TESTING=ON \
--DCMAKE_CXX_STANDARD=17 \
--DCMAKE_MACOSX_RPATH=FALSE \
--DCMAKE_INSTALL_NAME_DIR=$(pwd)/install/lib
-```
-
-Source the workspace:
-
-```bash
-source ./install/setup.zsh
-```
-
-### Build the GUI plugin (optional) 
-
-There is an optional GUI plugin that controls the wave parameters.
+wave 파라미터를 제어하는 GUI plugin
 
 ```bash
 cd ~/gz_ws/src/asv_wave_sim/gz-waves/src/gui/plugins/waves_control 
@@ -105,9 +76,9 @@ mkdir build && cd build
 cmake .. && make
 ```
 
-## Usage
+## 사용법
 
-### Set environment variables
+### 환경변수 설정
 
 ```bash
 # for future use - to support multiple Gazebo versions
@@ -133,26 +104,7 @@ export GZ_GUI_PLUGIN_PATH=\
 $GZ_GUI_PLUGIN_PATH:\
 $HOME/gz_ws/src/asv_wave_sim/gz-waves/src/gui/plugins/waves_control/build
 ```
-
-### Ubuntu VM
-
-If running on an Ubuntu virtual machine you may need to use software rendering if the hypervisor does not support hardware acceleration for OpenGL 4.2+. Install `mesa-utils` to enable llvmpipe:
-
-```bash
-sudo apt-get install mesa-utils
-```
-
-To use the llvmpipe software renderer, prefix Gazebo commands with the `LIBGL_ALWAYS_SOFTWARE` environment variable:
-
-```bash
-LIBGL_ALWAYS_SOFTWARE=1 gz sim waves.sdf
-```
-
-## Examples
-
-On macOS the client and server must be launched separately. The commands may be combined on Ubuntu.
-
-Launch a Gazebo session.
+## 예제
 
 Server:
 
@@ -166,13 +118,7 @@ Client:
 gz sim -v4 -g
 ```
 
-The session should include a wave field and some floating objects.
-
-## Changes
-
-There are some changes to the plugin SDF schema for hydrodynamics and waves.   
-
-### Waves model and visual plugins
+### Waves model과 visual plugins
 
 - The `filename` and `name` attributes for the wave model and visal plugins have changed.
 - The `<size>` element has been renamed to `<tile_size>` and moved into `<waves>`
@@ -419,7 +365,7 @@ colcon test --merge-install
 colcon test-result --all --verbose 
 ```
 
-Testing within a project build directory
+project 빌드 디렉토리내에서 테스트
 
 ```bash
 $ cd ~/gz_ws/src/asv_wave_sim/gz-waves
@@ -435,21 +381,6 @@ Plots may be generated for some of the wave spectra and wave simulation methods:
 ```bash
 ./install/bin/PLOT_WaveSpectrum
 ```
-
-## Legacy versions
-
-There is no plan to back-port new features to Gazebo9 or Gazebo11. The following branches are maintained for legacy support:
-
-- [`gazebo9`](https://github.com/srmainwaring/asv_wave_sim/tree/gazebo9) - for Gazebo9 / ROS Melodic / Ubuntu 18.04 (Bionic).
-
-- [`gazebo11`](https://github.com/srmainwaring/asv_wave_sim/tree/gazebo11) - for Gazebo11 / ROS Noetic / Ubuntu 20.04 (Focal).
-
-In addition there are three branches that contain development iterations of the FFT wave simulation - for Gazebo11 / ROS Noetic / Ubuntu 20.04 (Focal):
-
-- [`feature/fft-waves-v1`](https://github.com/srmainwaring/asv_wave_sim/tree/feature/fft-waves-v1)
-- [`feature/fft-waves-v2`](https://github.com/srmainwaring/asv_wave_sim/tree/feature/fft-waves-v2)
-- [`feature/fft-waves-v3`](https://github.com/srmainwaring/asv_wave_sim/tree/feature/fft-waves-v3)
-
 
 ## License
 
