@@ -8,7 +8,7 @@ project(gz-waves1 VERSION 1.0.0)
 #============================================================================
 # Find gz-cmake
 #============================================================================
-find_package(gz-cmake3 REQUIRED)
+find_package(gz-cmake3 REQUIRED)  # gz-cmake3는 https://github.com/gazebosim/gz-cmake 참고
 set(GZ_CMAKE_VER ${gz-cmake3_VERSION_MAJOR})
 
 #============================================================================
